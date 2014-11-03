@@ -1,0 +1,22 @@
+name:                yamlmerge
+version:             0.1.0.0
+synopsis:            Merge multiple YAML files into one
+description:         Merge multiple YAML files into one
+license:             BSD3
+license-file:        LICENSE
+author:              David Joyner
+maintainer:          david@joynerhome.net
+copyright:           (C) 2014 David Joyner
+category:            Data
+build-type:          Simple
+cabal-version:       >=1.10
+
+executable yamlmerge
+  main-is:             Main.hs
+  ghc-options:         -Wall
+  default-language:    Haskell2010
+  build-depends:       base >=4.7 && <4.8,
+                       bytestring >=0.10 && <0.11,
+                       unordered-containers >=0.2 && <0.3,
+                       vector >=0.10 && <0.11,
+                       yaml >=0.8 && <0.9
