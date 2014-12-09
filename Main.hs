@@ -1,4 +1,4 @@
-import Control.Monad (when)
+import Control.Monad (unless)
 import qualified Data.ByteString as BS
 import qualified Data.HashMap.Strict as HM
 import qualified Data.Vector as V
@@ -9,7 +9,7 @@ import System.IO (stdout)
 main :: IO ()
 main = do
   vs <- getArgs >>= decodeFiles
-  when (not $ null vs) $ do
+  unless (null vs) $ do
     let bs = encode $ foldr1 mergeObjects vs
     BS.hPut stdout bs
 
@@ -22,14 +22,14 @@ decodeFiles = mapM $ \f -> do
 
 mergeObjects :: Value -> Value -> Value
 mergeObjects (Object o1) (Object o2) = Object $ HM.unionWith mergeObjects o1 o2
-mergeObjects (Array a1) (Array a2) = Array $ (V.++) a1 a2
-mergeObjects v1 v2 = error $ "Cannot merge " ++ show v1 ++ " with " ++ show v2
+mergeObjects (Array a1) (Array a2)   = Array $ (V.++) a1 a2
+mergeObjects v1 v2                   = error $ "Cannot merge " ++ show v1 ++ " with " ++ show v2
 
 showParseException :: ParseException -> String
 showParseException (InvalidYaml (Just ex)) = showYamlException ex
-showParseException (AesonException s) = s
-showParseException ex = show ex
+showParseException (AesonException s)      = s
+showParseException ex                      = show ex
 
 showYamlException :: YamlException -> String
-showYamlException (YamlException s) = show s
+showYamlException (YamlException s)          = show s
 showYamlException (YamlParseException p c m) = p ++ " " ++ c ++ " at " ++ show m
